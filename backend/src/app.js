@@ -9,7 +9,20 @@ import uploadRoutes from "./routes/uploadRoutes.js";
 
 const app = express();
 
-app.use(cors());
+// ── CORS Configuration ───────────────────────────────────────
+// Allows requests from your local dev frontend AND your deployed frontend (set via env var)
+const allowedOrigins = [
+  "http://localhost:5173",
+  process.env.FRONTEND_URL, // will be set on Render once Vercel URL is known
+].filter(Boolean);
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
